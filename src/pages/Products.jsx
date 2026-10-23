@@ -198,7 +198,7 @@ function Products() {
               <div className="spinner"></div>
             ) : products.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-icon">🔍</div>
+                <div className="empty-icon"></div>
                 <h3 className="empty-title">No products found</h3>
                 <p className="empty-text">Try different filters or search</p>
               </div>
