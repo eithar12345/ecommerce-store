@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // في Vercel، المتغير BACKEND_URL هيتولد أوتوماتيك عشان يربط الفرونت بالباك إند
-  // في جهازك المحلي (Localhost)، هيستخدم البورت 3000
-  baseURL: import.meta.env.BACKEND_URL || 'http://localhost:3000',
+  // Vercel هيقرأ المتغير VITE_API_URL اللي إحنا حاطينه في الإعدادات
+  // ولو شغال على جهازك، هيستخدم localhost
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
 });
 
 api.interceptors.request.use((config) => {
