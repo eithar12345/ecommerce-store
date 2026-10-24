@@ -15,9 +15,7 @@ export default function HomeHero() {
         <div className="home-hero-inner">
           <div className="home-hero-text-box">
             <p className="home-hero-label">Premium Collection</p>
-            <h1 className="text-6xl font-serif text-[#C49B63] leading-tight mb-6">
-  Shop the Collection
-</h1>
+            <h1 className="home-hero-title">Shop the Collection</h1>
             <p className="home-hero-subtitle">
               Style, quality and elegance — all in one place.
             </p>
