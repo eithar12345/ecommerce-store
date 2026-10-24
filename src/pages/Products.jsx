@@ -22,14 +22,19 @@ function Products() {
   useEffect(() => {
     api.get('/products?limit=100')
       .then((res) => {
-        setAllProducts(res.data.products);
-        setProducts(res.data.products);
+        // حماية: لو مفيش منتجات راجعة، نخليها مصفوفة فاضية
+        const fetchedProducts = res.data.products || [];
+        setAllProducts(fetchedProducts);
+        setProducts(fetchedProducts);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
+    // حماية: لو allProducts لسه بتتحمل، نخرج من الدالة عشان ميعملش كراش
+    if (!allProducts) return;
+
     let filtered = [...allProducts];
 
     if (category) {
@@ -38,7 +43,8 @@ function Products() {
 
     if (search) {
       filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase())
+        // التعديل هنا: ضفنا ? عشان لو الاسم مش موجود ميعملش كراش
+        p.name?.toLowerCase().includes(search.toLowerCase())
       );
     }
 
