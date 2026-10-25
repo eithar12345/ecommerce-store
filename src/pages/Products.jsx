@@ -70,7 +70,6 @@ function Products() {
     else toast.error(result.error);
   };
 
-  // التعديل هنا: إضافة المنتج للداتابيز والتوجه لصفحة المفضلات
   const toggleWishlist = async (e, productId) => {
     e.preventDefault();
     e.stopPropagation();
@@ -85,7 +84,7 @@ function Products() {
     try {
       await api.post(`/wishlists/add/${productId}`);
       toast.success('Added to wishlist!');
-      navigate('/wishlist'); // التوجه لصفحة المفضلات
+      // شيلنا navigate('/wishlist') من هنا
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to add to wishlist');
     }
@@ -120,16 +119,8 @@ function Products() {
                 </svg>
               </div>
               {categories.map((c) => (
-                <label
-                  key={c.value}
-                  className={`home-filter-option ${category === c.value ? 'active' : ''}`}
-                >
-                  <input
-                    type="radio"
-                    name="category"
-                    checked={category === c.value}
-                    onChange={() => setCategory(c.value)}
-                  />
+                <label key={c.value} className={`home-filter-option ${category === c.value ? 'active' : ''}`}>
+                  <input type="radio" name="category" checked={category === c.value} onChange={() => setCategory(c.value)} />
                   {c.label}
                 </label>
               ))}
@@ -138,14 +129,7 @@ function Products() {
             <div className="home-filter-group">
               <div className="home-filter-group-title">Price Range</div>
               <div className="home-price-range">
-                <input
-                  type="range"
-                  min="0"
-                  max="1000"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="home-price-slider"
-                />
+                <input type="range" min="0" max="1000" value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} className="home-price-slider" />
                 <div className="home-price-values">
                   <span>$0</span>
                   <span>$100+</span>
@@ -154,28 +138,19 @@ function Products() {
             </div>
 
             <div className="home-sidebar-quote">
-              <p className="home-sidebar-quote-text">
-                Better Things<br />Are Coming
-              </p>
+              <p className="home-sidebar-quote-text">Better Things<br />Are Coming</p>
               <span className="home-sidebar-quote-heart">♥</span>
             </div>
           </aside>
 
           {/* MAIN */}
           <main className="home-products-main">
-            {/* Toolbar */}
             <div className="home-products-toolbar">
               <div className="home-search-wrapper">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="home-search-input"
-                />
+                <input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="home-search-input" />
               </div>
 
               <div className="home-sort-wrapper">
@@ -187,27 +162,16 @@ function Products() {
                 </select>
 
                 <div className="home-view-toggles">
-                  <button
-                    className={`home-view-toggle ${viewMode === 'grid' ? 'active' : ''}`}
-                    onClick={() => setViewMode('grid')}
-                  >
-                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
+                  <button className={`home-view-toggle ${viewMode === 'grid' ? 'active' : ''}`} onClick={() => setViewMode('grid')}>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                   </button>
-                  <button
-                    className={`home-view-toggle ${viewMode === 'list' ? 'active' : ''}`}
-                    onClick={() => setViewMode('list')}
-                  >
-                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+                  <button className={`home-view-toggle ${viewMode === 'list' ? 'active' : ''}`} onClick={() => setViewMode('list')}>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Products Grid */}
             {loading ? (
               <div className="spinner"></div>
             ) : products.length === 0 ? (
@@ -222,10 +186,7 @@ function Products() {
                   <Link key={p._id} to={`/products/${p._id}`} className="home-product-card">
                     <div className="home-product-image-wrapper">
                       <img src={p.images?.[0]?.url} alt={p.name} className="home-product-card-image" />
-                      <button
-                        className={`home-wishlist-btn ${wishlist.includes(p._id) ? 'active' : ''}`}
-                        onClick={(e) => toggleWishlist(e, p._id)}
-                      >
+                      <button className={`home-wishlist-btn ${wishlist.includes(p._id) ? 'active' : ''}`} onClick={(e) => toggleWishlist(e, p._id)}>
                         <svg width="18" height="18" fill={wishlist.includes(p._id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
