@@ -22,7 +22,6 @@ function Products() {
   useEffect(() => {
     api.get('/products?limit=100')
       .then((res) => {
-        // حماية: لو مفيش منتجات راجعة، نخليها مصفوفة فاضية
         const fetchedProducts = res.data.products || [];
         setAllProducts(fetchedProducts);
         setProducts(fetchedProducts);
@@ -32,7 +31,6 @@ function Products() {
   }, []);
 
   useEffect(() => {
-    // حماية: لو allProducts لسه بتتحمل، نخرج من الدالة عشان ميعملش كراش
     if (!allProducts) return;
 
     let filtered = [...allProducts];
@@ -43,7 +41,6 @@ function Products() {
 
     if (search) {
       filtered = filtered.filter((p) =>
-        // التعديل هنا: ضفنا ? عشان لو الاسم مش موجود ميعملش كراش
         p.name?.toLowerCase().includes(search.toLowerCase())
       );
     }
@@ -73,14 +70,25 @@ function Products() {
     else toast.error(result.error);
   };
 
-  const toggleWishlist = (e, productId) => {
+  // التعديل هنا: إضافة المنتج للداتابيز والتوجه لصفحة المفضلات
+  const toggleWishlist = async (e, productId) => {
     e.preventDefault();
     e.stopPropagation();
-    setWishlist((prev) =>
-      prev.includes(productId)
-        ? prev.filter((id) => id !== productId)
-        : [...prev, productId]
-    );
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Please login first');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      await api.post(`/wishlists/add/${productId}`);
+      toast.success('Added to wishlist!');
+      navigate('/wishlist'); // التوجه لصفحة المفضلات
+    } catch (error) {
+      toast.error(error.response?.data?.error || 'Failed to add to wishlist');
+    }
   };
 
   const categories = [
