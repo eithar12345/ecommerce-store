@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
 
-function ResetPassword() {
+const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
@@ -12,58 +12,159 @@ function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
+      return toast.error('Passwords do not match');
     }
-
-    if (password.length < 7) {
-      toast.error('Password must be at least 7 characters');
-      return;
-    }
-
     setLoading(true);
     try {
-      const res = await api.patch(`/users/reset-password/${token}`, { password });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      toast.success('Password reset successful!');
-      navigate('/');
-      window.location.reload();
-    } catch (err) {
-      toast.error(err.response?.data?.error || 'Reset failed');
+      await api.patch(`/users/reset-password/${token}`, { password });
+      toast.success('Password reset successfully!');
+      navigate('/login');
+    } catch (error) {
+      toast.error(error.response?.data?.error || 'Failed to reset password');
     } finally {
       setLoading(false);
     }
   };
 
+  // ستايلات الـ CSS جوه الصفحة
+  const styles = {
+    page: {
+      minHeight: '100vh',
+      backgroundColor: '#FAF8F5',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: 'sans-serif'
+    },
+    logo: {
+      textAlign: 'center',
+      marginBottom: '30px',
+      fontSize: '32px',
+      color: '#C49B63',
+      fontFamily: 'serif',
+      fontWeight: 'bold'
+    },
+    card: {
+      backgroundColor: '#FFFFFF',
+      borderRadius: '16px',
+      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.05)',
+      width: '100%',
+      maxWidth: '400px',
+      padding: '40px',
+      border: '1px solid #f0f0f0',
+      boxSizing: 'border-box'
+    },
+    title: {
+      textAlign: 'center',
+      marginBottom: '30px'
+    },
+    titleH2: {
+      fontSize: '24px',
+      color: '#333',
+      fontFamily: 'serif',
+      margin: '0 0 10px 0'
+    },
+    titleP: {
+      color: '#777',
+      fontSize: '14px',
+      margin: '0'
+    },
+    formGroup: {
+      marginBottom: '20px'
+    },
+    label: {
+      display: 'block',
+      fontSize: '14px',
+      fontWeight: '600',
+      color: '#333',
+      marginBottom: '8px'
+    },
+    input: {
+      width: '100%',
+      padding: '12px 16px',
+      borderRadius: '10px',
+      border: '1px solid #e0e0e0',
+      backgroundColor: '#fafafa',
+      fontSize: '14px',
+      outline: 'none',
+      boxSizing: 'border-box',
+      transition: 'all 0.3s ease'
+    },
+    button: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: 'none',
+      backgroundColor: loading ? '#d1bda3' : '#C49B63',
+      color: 'white',
+      fontSize: '16px',
+      fontWeight: '600',
+      cursor: loading ? 'not-allowed' : 'pointer',
+      transition: 'background-color 0.3s ease',
+      marginTop: '10px'
+    },
+    backLink: {
+      display: 'block',
+      textAlign: 'center',
+      marginTop: '25px',
+      color: '#777',
+      fontSize: '14px',
+      textDecoration: 'none',
+      fontWeight: '500'
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-2">Reset Password</h1>
-        <p className="text-gray-500 text-center mb-8">Enter your new password</p>
+    <div style={styles.page}>
+      <div style={styles.logo}>
+        MyStore
+      </div>
+
+      <div style={styles.card}>
+        <div style={styles.title}>
+          <h2 style={styles.titleH2}>Reset Password</h2>
+          <p style={styles.titleP}>Enter your new password below to secure your account.</p>
+        </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block font-bold mb-2">New Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={7} className="w-full border rounded px-4 py-2 focus:outline-none focus:border-purple-600" />
+          <div style={styles.formGroup}>
+            <label style={styles.label}>New Password</label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={styles.input}
+              placeholder="Enter new password"
+            />
           </div>
-          <div className="mb-6">
-            <label className="block font-bold mb-2">Confirm Password</label>
-            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required className="w-full border rounded px-4 py-2 focus:outline-none focus:border-purple-600" />
+
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Confirm Password</label>
+            <input
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={styles.input}
+              placeholder="Confirm new password"
+            />
           </div>
-          <button type="submit" disabled={loading} className="w-full bg-purple-600 text-white py-3 rounded font-bold hover:bg-purple-700 disabled:bg-gray-400">
+
+          <button type="submit" disabled={loading} style={styles.button}>
             {loading ? 'Resetting...' : 'Reset Password'}
           </button>
         </form>
 
-        <p className="text-center mt-6 text-gray-600">
-          Back to <Link to="/login" className="text-purple-600 font-bold">Login</Link>
-        </p>
+        <Link to="/login" style={styles.backLink}>
+          ← Back to Login
+        </Link>
       </div>
     </div>
   );
-}
+};
 
 export default ResetPassword;

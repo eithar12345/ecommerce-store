@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://ecommerce-1-gold.vercel.app', // <--- حطي اللينك ده
+  // في Vercel هيقرأ من المتغير VITE_API_URL، وعلى جهازك هيستخدم localhost:3000
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
 });
 
 api.interceptors.request.use((config) => {
