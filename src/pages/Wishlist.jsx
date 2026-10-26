@@ -23,15 +23,20 @@ const Wishlist = () => {
 
   const removeFromWishlist = async (productId) => {
     try {
+      // بنبعت طلب المسح للباك إند
       await api.delete(`/wishlists/remove/${productId}`);
+      
+      // بنشيل المنتج من الشاشة فوراً (من غير ما نستنى السيرفر يرد تاني)
       setWishlist((prev) => prev.filter((p) => p._id !== productId));
+      
       toast.success('Removed from wishlist');
     } catch (error) {
       toast.error('Failed to remove');
+      console.error(error);
     }
   };
 
-  // ستايلات الـ Inline CSS
+  // ستايلات الصفحة
   const styles = {
     page: { padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', minHeight: '80vh' },
     breadcrumb: { fontSize: '14px', color: '#888', marginBottom: '30px' },
@@ -62,12 +67,10 @@ const Wishlist = () => {
 
   return (
     <div style={styles.page}>
-      {/* Breadcrumb */}
       <div style={styles.breadcrumb}>
         <Link to="/" style={styles.breadcrumbLink}>Home</Link> / <span>My Wishlist</span>
       </div>
 
-      {/* Header */}
       <div style={styles.header}>
         <h1 style={styles.title}>My Wishlist</h1>
         <p style={styles.subtitle}>Your saved items and favorite products.</p>
