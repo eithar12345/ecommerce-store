@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext'; 
 
 import Navbar from './components/Navbar';
-import Footer from './components/Footer'; // <--- ضفنا الفوتر هنا
+import Footer from './components/Footer'; 
 import ProtectedRoute from './components/ProtectedRoute';
 
 // الصفحات
@@ -19,6 +19,7 @@ import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import ResetPassword from './pages/ResetPassword';
+import Profile from './pages/Profile'; // <--- ضفنا صفحة البروفايل هنا
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Navbar />
           <main className="min-h-screen bg-gray-50">
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/:id" element={<ProductDetail />} />
@@ -35,12 +37,14 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/reset-password/:token" element={<ResetPassword />} />
 
+              {/* Protected Routes */}
               <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
               <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
               <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} /> {/* <--- ضفنا المسار هنا */}
             </Routes>
           </main>
-          <Footer /> {/* <--- ضفنا الفوتر هنا كمان */}
+          <Footer />
           <ToastContainer position="top-right" />
         </CartProvider>
       </AuthProvider>
