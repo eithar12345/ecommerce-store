@@ -6,9 +6,10 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext'; 
 
 import Navbar from './components/Navbar';
+import Footer from './components/Footer'; // <--- ضفنا الفوتر هنا
 import ProtectedRoute from './components/ProtectedRoute';
 
-// الصفحات اللي متأكدين إنها موجودة
+// الصفحات
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -39,6 +40,7 @@ function App() {
               <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
             </Routes>
           </main>
+          <Footer /> {/* <--- ضفنا الفوتر هنا كمان */}
           <ToastContainer position="top-right" />
         </CartProvider>
       </AuthProvider>
